@@ -1,5 +1,5 @@
 <template>
-  <form class="card">
+  <form class="card" @submit.prevent="createTask">
     <h1>Создать новую задачу</h1>
     <div class="form-control">
       <label for="title">Название</label>
@@ -22,6 +22,8 @@
 
 <script>
 import { computed, reactive, toRefs } from '@vue/reactivity'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
   setup() {
@@ -30,14 +32,31 @@ export default {
       validDate: '',
       validDescription: '',
     })
+    const store = useStore()
+    const router = useRouter()
 
     const isDisabled = computed(() => {
       return !Object.values(dataInput).every((value) => value.length > 0)
     })
 
+    // const isDisabled = ref(false)
+
+    function createTask() {
+      store.commit('newTask', {
+        idx: store.state.taskList.length,
+        title: dataInput.validTitle,
+        date: dataInput.validDate,
+        description: dataInput.validDescription,
+        status: 'primary',
+        activeTask: true,
+      })
+      router.push('/')
+    }
+
     return {
       isDisabled,
       ...toRefs(dataInput),
+      createTask,
     }
   },
 }
