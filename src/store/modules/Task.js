@@ -31,3 +31,6 @@ export default {
   actions: {}, // асинхрпонный вызов мутаций
   modules: {},
 }
+
+
+

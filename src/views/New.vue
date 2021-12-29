@@ -47,8 +47,7 @@ export default {
         title: dataInput.validTitle,
         date: dataInput.validDate,
         description: dataInput.validDescription,
-        status: 'primary',
-        activeTask: true,
+        status: 'active',
       })
       router.push('/')
     }

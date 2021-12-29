@@ -1,5 +1,5 @@
 <template>
-  <div class="card" v-if="isVisible">
+  <div class="card" v-if="task">
     <h2>{{ title }}</h2>
     <p><strong>Статус</strong>: <AppStatus :type="status" /></p>
     <p><strong>Дэдлайн</strong>: {{ date }}</p>
@@ -25,18 +25,18 @@ export default {
     const store = useStore()
     const route = useRoute()
 
-    store.commit('changeTask', { idx: Number(route.params.taskId) })
+    const task = store.state.taskList.find(
+      (task) => task.idx === Number(route.params.taskId)
+    )
 
-    const { getters } = store
-
-    const { title, status, date, description } = getters.showTask
+    const { title, status, date, description } = task ?? false
 
     return {
       title,
       status,
       date,
       description,
-      isVisible: store.state.task,
+      task,
     }
   },
   components: { AppStatus },
