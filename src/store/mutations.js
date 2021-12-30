@@ -11,4 +11,7 @@ export default {
   updateTask(state, { idx, status }) {
     state.taskList.find((task) => task.idx === idx).status = status
   },
+  loader(state, statusLoader) {
+    state.loader = statusLoader
+  }
 }

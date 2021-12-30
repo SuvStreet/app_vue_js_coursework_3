@@ -15,4 +15,7 @@ export default {
   changeTask(_, getters) {
     return (idx) => getters.taskList.find((task) => task.idx === idx)
   },
+  loader({ loader }) {
+    return loader
+  }
 }

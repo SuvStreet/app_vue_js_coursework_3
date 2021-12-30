@@ -35,6 +35,7 @@ export default {
   setup() {
     const store = useStore()
     const router = useRouter()
+
     const taskList = ref(
       computed(() => {
         return store.getters.taskList

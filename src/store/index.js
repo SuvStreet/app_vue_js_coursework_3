@@ -7,6 +7,7 @@ export default createStore({
   state() {
     return {
       taskList: [],
+      loader: false,
     }
   },
   mutations,

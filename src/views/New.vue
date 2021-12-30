@@ -27,13 +27,14 @@ import { useRouter } from 'vue-router'
 
 export default {
   setup() {
+    const store = useStore()
+    const router = useRouter()
+
     const dataInput = reactive({
       validTitle: '',
       validDate: '',
       validDescription: '',
     })
-    const store = useStore()
-    const router = useRouter()
 
     const isDisabled = computed(() => {
       return !Object.values(dataInput).every((value) => value.length > 0)
