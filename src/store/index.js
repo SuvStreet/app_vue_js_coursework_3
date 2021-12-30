@@ -1,34 +1,4 @@
 import { createStore } from 'vuex'
-// import Task from './modules/Task'
-
-const dateNow = (date) => {
-  const now = new Date()
-  const d = new Date(date)
-  d.setHours(23, 59, 59, 999)
-  const day = d.getDate()
-  const month = d.getMonth() + 1
-  const year = d.getFullYear()
-
-  console.log(`now`, now)
-  console.log(`d`, d)
-
-  const value = now < d
-
-  if (value) {
-    return {
-      date: `${day}.${month}.${year}`,
-      status: 'active',
-    }
-  } else {
-    return {
-      date: `${day}.${month}.${year}`,
-      status: 'cancelled',
-    }
-  }
-
-  // console.log(`value`, value)
-  // console.log(`date`, date)
-}
 
 export default createStore({
   state() {
@@ -66,41 +36,31 @@ export default createStore({
     }
   },
   mutations: {
-    newTask(state, payload) {
-      const timeNow = new Date()
-      const date = new Date(payload.date)
-      date.setHours(23, 59, 59, 999)
-
-      const value = timeNow < date
-
-      const day = date.getDate()
-      const month = date.getMonth() + 1
-      const year = date.getFullYear()
-
-      ;(payload.date = `${day}.${month}.${year}`),
-        value ? (payload.status = 'active') : (payload.status = 'cancelled')
-
-      state.taskList.push(payload)
-
-      console.log(`state in newTask`, state)
+    newTask(state, task) {
+      if (new Date(task.date) < new Date()) {
+        task.status = 'cancelled'
+      }
+      state.taskList.push(task)
+    },
+    updateTask(state, task) {
+      state.taskList[task.idx].status = task.status
     },
   },
   getters: {
-    counterActiveTask({ taskList }) {
-      return taskList.filter((active) => active.status === 'active').length
+    taskList({ taskList }) {
+      return taskList
+    },
+    activeTask({ taskList }) {
+      return taskList.filter((active) => active.status === 'active')
+    },
+    counterActiveTask(_, getters) {
+      return getters.activeTask.length
+    },
+    changeTask(_, getters) {
+      return (idx) => getters.taskList.find((task) => task.idx === idx)
     },
   },
-  // modules: {
-  //   task: Task,
-  // },
-  // getters: {
-  //   taskAddList(state) {
-  //     return state.taskList = state
-  //   }
-  // }
 })
-
-// TODO: вывести список активных задач на экран
 
 // активен - active
 // отменён - cancelled

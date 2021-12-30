@@ -6,17 +6,18 @@ import Task from '../views/Task.vue'
 const routes = [
   {
     path: '/',
-    name: 'taskList',
+    name: 'TaskList',
     component: Tasks,
   },
   {
     path: '/new_task',
-    name: 'newTask',
+    name: 'NewTask',
     component: New,
   },
   {
     path: '/task/:taskId',
-    name: 'task',
+    name: 'Task',
+    props: true,
     component: Task,
   },
 ]

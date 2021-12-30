@@ -1,45 +1,44 @@
 <template>
-  <span class="badge" :class="[color]">{{ status }}</span>
+  <span :class="['badge', className]">{{ text }}</span>
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { ref, watch } from 'vue'
 export default {
   props: {
     type: {
       type: String,
-      default: 'active',
       validator(value) {
         return ['active', 'done', 'cancelled', 'pending'].includes(value)
       },
     },
   },
   setup(props) {
-    const color = ref('')
-    const status = ref('')
-
-    switch (props.type) {
-      case 'active':
-        color.value = 'primary'
-        status.value = 'Активен'
-        break
-      case 'done':
-        color.value = 'primary'
-        status.value = 'Завершён'
-        break
-      case 'pending':
-        color.value = 'warning'
-        status.value = 'Выполняется'
-        break
-      default:
-        color.value = 'danger'
-        status.value = 'Отменён'
-        break
+    const classNameMap = {
+      active: 'primary',
+      done: 'primary',
+      cancelled: 'danger',
+      pending: 'warning',
     }
 
+    const textMap = {
+      active: 'Активен',
+      done: 'Завершён',
+      cancelled: 'Отменён',
+      pending: 'Выполняется',
+    }
+
+    const className = ref(classNameMap[props.type])
+    const text = ref(textMap[props.type])
+
+    watch(props, (values) => {
+      className.value = classNameMap[values.type]
+      text.value = textMap[values.type]
+    })
+
     return {
-      color,
-      status,
+      className,
+      text,
     }
   },
 }

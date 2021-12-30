@@ -1,42 +1,50 @@
 <template>
   <div class="card" v-if="task">
-    <h2>{{ title }}</h2>
-    <p><strong>Статус</strong>: <AppStatus :type="status" /></p>
-    <p><strong>Дэдлайн</strong>: {{ date }}</p>
-    <p><strong>Описание</strong>: {{ description }}</p>
+    <h2>{{ task.title }}</h2>
+    <p><strong>Статус</strong>: <AppStatus :type="task.status" /></p>
+    <p>
+      <strong>Дэдлайн</strong>: {{ new Date(task.date).toLocaleDateString() }}
+    </p>
+    <p><strong>Описание</strong>: {{ task.description }}</p>
     <div>
-      <button class="btn">Взять в работу</button>
-      <button class="btn primary">Завершить</button>
-      <button class="btn danger">Отменить</button>
+      <button class="btn" @click="updateStatus('pending')">
+        Взять в работу
+      </button>
+      <button class="btn primary" @click="updateStatus('done')">
+        Завершить
+      </button>
+      <button class="btn danger" @click="updateStatus('cancelled')">
+        Отменить
+      </button>
     </div>
   </div>
   <h3 class="text-white center" v-else>
-    Задачи с id = <strong>{{ $route.params.taskId }}</strong> нет.
+    Задачи с id = <strong>{{ taskId }}</strong> нет.
   </h3>
 </template>
 
 <script>
+import AppStatus from '../components/AppStatus.vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import AppStatus from '../components/AppStatus'
-import { useRoute } from 'vue-router'
 
 export default {
-  setup() {
+  props: ['taskId'],
+  setup(props) {
     const store = useStore()
-    const route = useRoute()
+    const taskId = Number(props.taskId)
 
-    const task = store.state.taskList.find(
-      (task) => task.idx === Number(route.params.taskId)
-    )
+    const task = computed(() => store.getters.changeTask(taskId))
 
-    const { title, status, date, description } = task ?? false
+    const updateStatus = (status) => {
+      const updatedTask = { ...task.value, status }
+      store.commit('updateTask', updatedTask)
+    }
 
     return {
-      title,
-      status,
-      date,
-      description,
+      taskId,
       task,
+      updateStatus,
     }
   },
   components: { AppStatus },

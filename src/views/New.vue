@@ -39,16 +39,15 @@ export default {
       return !Object.values(dataInput).every((value) => value.length > 0)
     })
 
-    // const isDisabled = ref(false)
-
     function createTask() {
-      store.commit('newTask', {
+      const newTask = {
         idx: store.state.taskList.length,
         title: dataInput.validTitle,
         date: dataInput.validDate,
         description: dataInput.validDescription,
         status: 'active',
-      })
+      }
+      store.commit('newTask', newTask)
       router.push('/')
     }
 
@@ -60,3 +59,5 @@ export default {
   },
 }
 </script>
+
+TODO: Соединить с firebase
