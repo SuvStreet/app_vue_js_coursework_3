@@ -1,49 +1,56 @@
 import { createStore } from 'vuex'
+import axios from 'axios'
 
 export default createStore({
   state() {
     return {
-      taskList: [
-        {
-          idx: 0,
-          title: 'Корм',
-          date: '2022-12-17',
-          description: 'Покупка корма',
-          status: 'active',
-        },
-        {
-          idx: 1,
-          title: 'Корм1',
-          date: '2022-12-18',
-          description: 'Покупка корма1',
-          status: 'cancelled',
-        },
-        {
-          idx: 2,
-          title: 'Корм2',
-          date: '2022-12-19',
-          description: 'Покупка корма2',
-          status: 'pending',
-        },
-        {
-          idx: 3,
-          title: 'Корм3',
-          date: '2022-12-30',
-          description: 'Покупка корма3',
-          status: 'done',
-        },
-      ],
+      taskList: [],
     }
   },
   mutations: {
+    loadingAllTasks(state, tasks) {
+      state.taskList = tasks
+    },
     newTask(state, task) {
-      if (new Date(task.date) < new Date()) {
-        task.status = 'cancelled'
-      }
       state.taskList.push(task)
     },
     updateTask(state, task) {
-      state.taskList[task.idx].status = task.status
+      state.taskList.find((t) => t.idx === task.idx).status = task.status
+    },
+  },
+  actions: {
+    async newTask({ commit }, task) {
+      if (new Date(task.date).setHours(23, 59, 59, 999) < new Date()) {
+        task.status = 'cancelled'
+      }
+      const { data } = await axios.post(
+        'https://freelance-coursework3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json',
+        task
+      )
+
+      commit('newTask', { ...task, idx: data.name })
+    },
+    async loadingAllTasks({ commit }) {
+      const { data } = await axios.get(
+        'https://freelance-coursework3-default-rtdb.europe-west1.firebasedatabase.app/tasks.json'
+      )
+
+      if (data) {
+        const tasks = Object.keys(data).map((key) => {
+          return {
+            idx: key,
+            ...data[key],
+          }
+        })
+        commit('loadingAllTasks', tasks)
+      }
+    },
+    async updateTask({ commit, getters }, task) {
+      const { data } = await axios.put(
+        `https://freelance-coursework3-default-rtdb.europe-west1.firebasedatabase.app/tasks/${task.idx}.json`,
+        task
+      )
+      commit('updateTask', data)
     },
   },
   getters: {

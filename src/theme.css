@@ -378,6 +378,8 @@ h3 {
     background-color: #fff;
     box-sizing: border-box;
     border-bottom: 1px solid #eaecef;
+    max-width: 1980px;
+    margin: 0 auto; 
 }
 
 .navbar-menu {

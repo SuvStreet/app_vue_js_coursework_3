@@ -24,21 +24,21 @@
 </template>
 
 <script>
-import AppStatus from '../components/AppStatus.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import AppStatus from '../components/AppStatus.vue'
 
 export default {
   props: ['taskId'],
   setup(props) {
     const store = useStore()
-    const taskId = Number(props.taskId)
+    const taskId = props.taskId
 
     const task = computed(() => store.getters.changeTask(taskId))
 
     const updateStatus = (status) => {
       const updatedTask = { ...task.value, status }
-      store.commit('updateTask', updatedTask)
+      store.dispatch('updateTask', updatedTask)
     }
 
     return {

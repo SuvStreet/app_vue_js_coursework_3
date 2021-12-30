@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-white center" v-if="visible">Задач пока нет</h1>
+  <h1 class="text-white center" v-if="taskList.length === 0">Задач пока нет</h1>
   <template v-else>
     <h3 class="text-white">
       Всего активных задач: {{ $store.getters.counterActiveTask }}
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { computed, ref} from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import AppStatus from '../components/AppStatus'
@@ -34,14 +35,18 @@ export default {
   setup() {
     const store = useStore()
     const router = useRouter()
-    
+    const taskList = ref(
+      computed(() => {
+        return store.getters.taskList
+      })
+    )
+
     const open = (taskId) => {
       router.push('/task/' + taskId)
     }
 
     return {
-      visible: store.state.taskList.length === 0,
-      taskList: store.state.taskList,
+      taskList,
       open,
     }
   },

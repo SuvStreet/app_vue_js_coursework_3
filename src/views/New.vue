@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { computed, reactive, toRefs } from '@vue/reactivity'
+import { computed, reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -41,13 +41,12 @@ export default {
 
     function createTask() {
       const newTask = {
-        idx: store.state.taskList.length,
         title: dataInput.validTitle,
         date: dataInput.validDate,
         description: dataInput.validDescription,
         status: 'active',
       }
-      store.commit('newTask', newTask)
+      store.dispatch('newTask', newTask)
       router.push('/')
     }
 
@@ -59,5 +58,3 @@ export default {
   },
 }
 </script>
-
-TODO: Соединить с firebase
