@@ -1,11 +1,16 @@
 export default {
   // получить все задачи
-  taskList({ taskList }) {
+  allTask({ taskList }) {
     return taskList
   },
+  // получить задачи по статусу
+  sortTask(_, getters) {
+    return (sortType) =>
+      getters.allTask.filter((task) => task.status === sortType)
+  },
   // получить все задачи со статусом active
-  activeTask({ taskList }) {
-    return taskList.filter((active) => active.status === 'active')
+  activeTask(_, getters) {
+    return getters.allTask.filter((active) => active.status === 'active')
   },
   // подсчитать сколько задать со статусом active
   counterActiveTask(_, getters) {
@@ -13,7 +18,7 @@ export default {
   },
   // поиск задачи по idx
   changeTask(_, getters) {
-    return (idx) => getters.taskList.find((task) => task.idx === idx)
+    return (idx) => getters.allTask.find((task) => task.idx === idx)
   },
   // получить статус loader
   loader({ loader }) {
@@ -22,5 +27,5 @@ export default {
   // получить статус toast
   toast({ toast }) {
     return toast
-  }
+  },
 }

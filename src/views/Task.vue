@@ -19,7 +19,7 @@
     </div>
   </div>
   <h3 class="text-white center" v-else>
-    Задачи с id = <strong>{{ taskId }}</strong> нет.
+    Задачи с id = <strong>"{{ taskId }}"</strong> нет.
   </h3>
 </template>
 
