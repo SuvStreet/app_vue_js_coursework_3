@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import Tasks from '../views/Tasks.vue'
-import New from '../views/New.vue'
-import Task from '../views/Task.vue'
 
 const routes = [
   {
@@ -12,14 +9,17 @@ const routes = [
   {
     path: '/new_task',
     name: 'NewTask',
-    component: New,
+    component: () => import('../views/New.vue'),
   },
   {
     path: '/task/:taskId',
     name: 'Task',
     props: true,
-    component: Task,
+    component: () => import('../views/Task.vue'),
   },
+  {
+    path: '/:notFound(.*)', redirect: '/'
+  }
 ]
 
 const router = createRouter({
