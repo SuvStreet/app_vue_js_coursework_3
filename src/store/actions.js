@@ -2,7 +2,7 @@ import server from '../server'
 
 export default {
   // загрузить все задачи с базы данных
-  async loadingAllTasks({ commit }) {
+  async loadingAllTasks({ commit, getters }) {
     commit('loader', true)
     const tasks = await server.get('tasks')
     commit('loadingAllTasks', tasks)
@@ -13,11 +13,43 @@ export default {
     if (new Date(task.date).setHours(23, 59, 59, 999) < new Date()) {
       task.status = 'cancelled'
     }
-    commit('newTask', { ...task, idx: await server.post('tasks', task)})
+    try {
+      const idTask = await server.post('tasks', task)
+      commit('newTask', { ...task, idx: idTask })
+      commit('toast', {
+        show: true,
+        title: 'Успех!',
+        text: `Задача ${idTask} успешно добавлена`,
+        type: 'success',
+      })
+    } catch (error) {
+      commit('toast', {
+        show: true,
+        title: 'Ошибка!',
+        text: `Задача не была добавлена`,
+        type: 'error',
+      })
+    }
   },
   // обновить статус задачи в базе данных
   async updateTask({ commit }, dataTask) {
-    const task = await server.put('tasks', dataTask, dataTask.idx)
-    commit('updateTask', task)
+    try {
+      const task = await server.put('tasks', dataTask, dataTask.idx)
+      commit('updateTask', task)
+
+      commit('toast', {
+        show: true,
+        title: 'Успех!',
+        text: `Статус изменён на "${dataTask.status}" успешно `,
+        type: 'success',
+      })
+    } catch (error) {
+      commit('toast', {
+        show: true,
+        title: 'Ошибка!',
+        text: `Статус неизменён`,
+        type: 'error',
+      })
+    }
   },
 }

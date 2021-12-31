@@ -16,7 +16,7 @@
       <textarea id="description" v-model.trim="validDescription"></textarea>
     </div>
 
-    <button class="btn primary" :disabled="isDisabled">Создать</button>
+    <button class="btn primary">Создать</button>
   </form>
 </template>
 
@@ -36,23 +36,32 @@ export default {
       validDescription: '',
     })
 
-    const isDisabled = computed(() => {
-      return !Object.values(dataInput).every((value) => value.length > 0)
-    })
+    // const isDisabled = computed(() => {
+    //   return !Object.values(dataInput).every((value) => value.length > 0)
+    // })
 
     function createTask() {
-      const newTask = {
-        title: dataInput.validTitle,
-        date: dataInput.validDate,
-        description: dataInput.validDescription,
-        status: 'active',
+      if (Object.values(dataInput).every((value) => value.length > 0)) {
+        const newTask = {
+          title: dataInput.validTitle,
+          date: dataInput.validDate,
+          description: dataInput.validDescription,
+          status: 'active',
+        }
+        store.dispatch('newTask', newTask)
+        router.push('/')
+      } else {
+        store.commit('toast', {
+          show: true,
+          title: 'Обратите внимание!',
+          text: 'Все поля должны быть заполнены!',
+          type: 'info',
+        })
       }
-      store.dispatch('newTask', newTask)
-      router.push('/')
     }
 
     return {
-      isDisabled,
+      // isDisabled,
       ...toRefs(dataInput),
       createTask,
     }

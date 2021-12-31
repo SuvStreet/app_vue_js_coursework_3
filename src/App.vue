@@ -1,37 +1,31 @@
 <template>
   <the-navbar></the-navbar>
-  <app-loader v-if="isLoading" />
+  <app-loader v-if="$store.getters.loader" />
   <div v-else class="container with-nav">
     <router-view />
   </div>
+  <app-toast />
 </template>
 
 <script>
 import TheNavbar from './components/TheNavbar.vue'
 import AppLoader from './components/AppLoader.vue'
-import { onMounted, ref, watch } from 'vue'
+import AppToast from './components/AppToast.vue'
+import { onMounted } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
   setup() {
     const store = useStore()
-    const isLoading = ref(false)
 
     onMounted(() => {
       store.dispatch('loadingAllTasks')
     })
-
-    watch(() => store.getters.loader, (newValue) => {
-      isLoading.value = newValue
-    })
-
-    return {
-      isLoading
-    }
   },
   components: {
     TheNavbar,
     AppLoader,
+    AppToast,
   },
 }
 </script>

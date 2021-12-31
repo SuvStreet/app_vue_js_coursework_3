@@ -11,7 +11,17 @@ export default {
   updateTask(state, { idx, status }) {
     state.taskList.find((task) => task.idx === idx).status = status
   },
+  // изменить статус loader
   loader(state, statusLoader) {
     state.loader = statusLoader
+  },
+  // изменить статус toast
+  toast(state, { show, title, text, type }) {
+    state.toast = {
+      show,
+      title,
+      text,
+      type,
+    }
   }
 }

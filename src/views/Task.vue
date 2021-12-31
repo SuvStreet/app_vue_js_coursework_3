@@ -37,8 +37,18 @@ export default {
     const task = computed(() => store.getters.changeTask(taskId))
 
     const updateStatus = (status) => {
-      const updatedTask = { ...task.value, status }
-      store.dispatch('updateTask', updatedTask)
+      if (status !== task.value.status) {
+        const updatedTask = { ...task.value, status }
+        store.dispatch('updateTask', updatedTask)
+      }
+      else {
+        store.commit('toast', {
+          show: true,
+          title: 'Обратите внимание!',
+          text: 'Задача уже в этом статусе!',
+          type: 'info',
+        })
+      }
     }
 
     return {

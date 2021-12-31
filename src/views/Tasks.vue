@@ -26,21 +26,20 @@
 </template>
 
 <script>
-import { computed, ref} from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import AppStatus from '../components/AppStatus'
+import AppStatus from '../components/AppStatus.vue'
+import AppLoader from '../components/AppLoader.vue'
 
 export default {
   setup() {
     const store = useStore()
     const router = useRouter()
 
-    const taskList = ref(
-      computed(() => {
-        return store.getters.taskList
-      })
-    )
+    const taskList = computed(() => {
+      return store.getters.taskList
+    })
 
     const open = (taskId) => {
       router.push('/task/' + taskId)
@@ -51,6 +50,6 @@ export default {
       open,
     }
   },
-  components: { AppStatus },
+  components: { AppStatus, AppLoader },
 }
 </script>

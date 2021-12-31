@@ -15,7 +15,12 @@ export default {
   changeTask(_, getters) {
     return (idx) => getters.taskList.find((task) => task.idx === idx)
   },
+  // получить статус loader
   loader({ loader }) {
     return loader
+  },
+  // получить статус toast
+  toast({ toast }) {
+    return toast
   }
 }

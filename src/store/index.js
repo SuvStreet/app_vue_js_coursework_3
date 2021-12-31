@@ -8,6 +8,12 @@ export default createStore({
     return {
       taskList: [],
       loader: false,
+      toast: {
+        show: false,
+        title: '',
+        text: '',
+        type: '',
+      }
     }
   },
   mutations,
