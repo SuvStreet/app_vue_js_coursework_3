@@ -6,6 +6,8 @@ jsconfig.json
 
 ### Firebase ###
 **/.firebaserc
+/.firebase
+.firebase/
 
 # local env files
 .env.local
