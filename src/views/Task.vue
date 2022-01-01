@@ -6,7 +6,7 @@
       <strong>Дэдлайн</strong>: {{ new Date(task.date).toLocaleDateString() }}
     </p>
     <p><strong>Описание</strong>: {{ task.description }}</p>
-    <div>
+    <div class="blockButton">
       <button class="btn" @click="updateStatus('pending')">
         Взять в работу
       </button>
@@ -40,8 +40,7 @@ export default {
       if (status !== task.value.status) {
         const updatedTask = { ...task.value, status }
         store.dispatch('updateTask', updatedTask)
-      }
-      else {
+      } else {
         store.commit('toast', {
           show: true,
           title: 'Обратите внимание!',

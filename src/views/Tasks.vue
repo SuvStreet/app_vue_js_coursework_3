@@ -78,10 +78,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.cardSort {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-</style>
+<style scoped></style>
