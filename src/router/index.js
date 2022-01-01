@@ -18,8 +18,9 @@ const routes = [
     component: () => import('../views/Task.vue'),
   },
   {
-    path: '/:notFound(.*)', redirect: '/'
-  }
+    path: '/:notFound(.*)',
+    redirect: '/',
+  },
 ]
 
 const router = createRouter({

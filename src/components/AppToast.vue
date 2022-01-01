@@ -1,4 +1,4 @@
-<template> 
+<template>
   <div class="wrapper">
     <div :class="['toast', type, { 'show-toast': show }]">
       <div class="container-1">
@@ -29,9 +29,9 @@ export default {
     })
 
     const nameClassMap = {
-      'success': 'fas fa-check-circle',
-      'error': 'fas fa-times-circle',
-      'info': 'fas fa-info-circle',
+      success: 'fas fa-check-circle',
+      error: 'fas fa-times-circle',
+      info: 'fas fa-info-circle',
     }
 
     const openToast = computed(() => {
@@ -56,24 +56,18 @@ export default {
 
     watch(openToast, (newValue) => {
       if (newValue.show) {
-        if (toast.show){
+        if (toast.show) {
           closeToast()
           time.value = setTimeout(() => {
             showToast(newValue)
           }, 1000)
-        }
-        else {
+        } else {
           showToast(newValue)
         }
       } else {
         toast.show = newValue.show
       }
     })
-
-    // const typeMap = {
-    //   'success': 'fa-check',
-    //   'error': 'fa-times',
-    // }
 
     return {
       ...toRefs(toast),

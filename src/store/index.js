@@ -20,8 +20,3 @@ export default createStore({
   actions,
   getters,
 })
-
-// активен - active
-// отменён - cancelled
-// выполняется - pending
-// завершён -done

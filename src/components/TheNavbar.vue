@@ -20,7 +20,7 @@
 
 <script>
 import { ref } from '@vue/runtime-core'
-import BurgerMenu from './BurgerMenu.vue'
+import BurgerMenu from '../views/BurgerMenu.vue'
 
 export default {
   emits: ['toggleMenu'],

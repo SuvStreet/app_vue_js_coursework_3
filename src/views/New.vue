@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { computed, reactive, toRefs } from 'vue'
+import { reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -35,10 +35,6 @@ export default {
       validDate: '',
       validDescription: '',
     })
-
-    // const isDisabled = computed(() => {
-    //   return !Object.values(dataInput).every((value) => value.length > 0)
-    // })
 
     function createTask() {
       if (Object.values(dataInput).every((value) => value.length > 0)) {
@@ -61,7 +57,6 @@ export default {
     }
 
     return {
-      // isDisabled,
       ...toRefs(dataInput),
       createTask,
     }
