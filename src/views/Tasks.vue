@@ -7,45 +7,32 @@
       </h3>
       <the-sort-task @valueSort="sortList"></the-sort-task>
     </div>
+
     <template v-if="taskListBySort.length === 0">
       <h3 class="text-white center">
         Задачи со статусом "{{ sortType }}" не найдено
       </h3>
     </template>
-    <div
-      class="card"
+
+    <CardTask
       v-else
-      v-for="{ title, date, status, idx } in taskListBySort"
-      :key="idx"
-    >
-      <h2 class="card-title">
-        {{ title }}
-        <AppStatus :type="status" />
-      </h2>
-      <p>
-        <strong>
-          <small>
-            {{ new Date(date).toLocaleDateString() }}
-          </small>
-        </strong>
-      </p>
-      <button class="btn primary" @click="open(idx)">Посмотреть</button>
-    </div>
+      v-for="dataTask in taskListBySort"
+      :key="dataTask.idx"
+      :dataTask="dataTask"
+    />
   </template>
 </template>
 
 <script>
 import { ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import AppStatus from '../components/AppStatus.vue'
 import AppLoader from '../components/AppLoader.vue'
 import TheSortTask from '../components/TheSortTask.vue'
+import CardTask from '../components/CardTask.vue'
 
 export default {
   setup() {
     const store = useStore()
-    const router = useRouter()
     const sortType = ref('allTask')
     const allTask = ref(store.getters.allTask)
     const taskList = ref(allTask.value)
@@ -62,19 +49,14 @@ export default {
       }
     })
 
-    const open = (taskId) => {
-      router.push('/task/' + taskId)
-    }
-
     return {
       sortType,
       allTask,
       sortList,
       taskListBySort: taskList,
-      open,
     }
   },
-  components: { AppStatus, AppLoader, TheSortTask },
+  components: { AppLoader, TheSortTask, CardTask },
 }
 </script>
 
