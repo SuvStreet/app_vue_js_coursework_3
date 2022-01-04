@@ -2,10 +2,10 @@ import server from '../server'
 
 export default {
   // загрузить все задачи с базы данных
-  async loadingAllTasks({ commit, getters }) {
+  async loadingAllTasks({ commit }) {
     commit('loader', true)
-    try {
-      const tasks = await server.get('tasks')
+    const tasks = await server.get('tasks')
+    if (tasks) {
       const formattedTasks = Object.keys(tasks).map((key) => {
         return {
           idx: key,
@@ -13,13 +13,6 @@ export default {
         }
       })
       commit('loadingAllTasks', formattedTasks)
-    } catch (error) {
-      commit('toast', {
-        show: true,
-        title: 'Ошибка!',
-        text: `Задачь ещё нет, будте первыми кто её создаст!`,
-        type: 'error',
-      })
     }
     commit('loader', false)
   },
