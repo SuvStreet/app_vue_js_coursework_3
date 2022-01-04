@@ -2,6 +2,7 @@
   <the-navbar @toggleMenu="toggleMenu"></the-navbar>
   <app-loader v-if="$store.getters.loader" />
   <div v-else :class="['container with-nav', toggleClass]">
+    
     <router-view />
   </div>
   <app-toast />

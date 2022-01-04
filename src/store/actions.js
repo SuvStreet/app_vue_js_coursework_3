@@ -4,8 +4,23 @@ export default {
   // загрузить все задачи с базы данных
   async loadingAllTasks({ commit, getters }) {
     commit('loader', true)
-    const tasks = await server.get('tasks')
-    commit('loadingAllTasks', tasks)
+    try {
+      const tasks = await server.get('tasks')
+      const formattedTasks = Object.keys(tasks).map((key) => {
+        return {
+          idx: key,
+          ...tasks[key],
+        }
+      })
+      commit('loadingAllTasks', formattedTasks)
+    } catch (error) {
+      commit('toast', {
+        show: true,
+        title: 'Ошибка!',
+        text: `Задачь ещё нет, будте первыми кто её создаст!`,
+        type: 'error',
+      })
+    }
     commit('loader', false)
   },
   // добавить новую задачу в базу данных
